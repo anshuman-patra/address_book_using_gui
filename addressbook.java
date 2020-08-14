@@ -21,12 +21,12 @@ public class addressbook implements ActionListener
 
    	JFrame appFrame;
 
-   	JLabel jlbName, jlbAddress, jlbPhone, jlbEmail;
-   	JTextField jtfName, jtfAddress, jtfPhone, jtfEmail;
+   	JLabel jlbName, jlbAddress, jlbPhone, jlbpincode;
+   	JTextField jtfName, jtfAddress, jtfPhone, jtfpincode;
    	JButton jbbSave, jbnDelete, jbnClear, jbnUpdate, jbnSearch,
    					jbnForward, jbnBack, jbnExit;
          
-   	String name, address, email;
+   	String name, address, pincode;
    	int phone;
    	int recordNumber;	 // used to naviagate using >> and << buttons 
    	Container cPane;
@@ -38,7 +38,7 @@ public class addressbook implements ActionListener
    { 	
 	    name    = "";
 	    address = "";
-	    email  = "";
+	    pincode  = "";
 	    phone   = -1 ;		//Stores 0 to indicate no Phone Number
 	    recordNumber = -1;
 	
@@ -73,12 +73,12 @@ public class addressbook implements ActionListener
    		jlbName = new JLabel("Name");
    		jlbAddress = new JLabel("Address");
    		jlbPhone = new JLabel("Phone");
-   		jlbEmail = new JLabel("Email");
+   		jlbpincode = new JLabel("pincode");
 
    		jtfName    = new JTextField(20);
    		jtfAddress = new JTextField(20);
    		jtfPhone   = new JTextField(20);
-   		jtfEmail   = new JTextField(20);
+   		jtfpincode   = new JTextField(20);
 
    		jbbSave   = new JButton("Save");
    		jbnDelete = new JButton("Delete");
@@ -137,7 +137,7 @@ public class addressbook implements ActionListener
         gridBagConstraintsx07.gridx = 0;
         gridBagConstraintsx07.insets = new Insets(5,5,5,5); 
         gridBagConstraintsx07.gridy = 3;
-        cPane.add(jlbEmail, gridBagConstraintsx07);
+        cPane.add(jlbpincode, gridBagConstraintsx07);
         
         GridBagConstraints gridBagConstraintsx08 = new GridBagConstraints();
         gridBagConstraintsx08.gridx = 1;
@@ -145,7 +145,7 @@ public class addressbook implements ActionListener
         gridBagConstraintsx08.gridwidth = 2;
         gridBagConstraintsx08.insets = new Insets(5,5,5,5); 
         gridBagConstraintsx08.fill = GridBagConstraints.BOTH;
-        cPane.add(jtfEmail, gridBagConstraintsx08);
+        cPane.add(jtfpincode, gridBagConstraintsx08);
         
         GridBagConstraints gridBagConstraintsx09 = new GridBagConstraints();
         gridBagConstraintsx09.gridx = 0;
@@ -255,13 +255,13 @@ public class addressbook implements ActionListener
 	   		JOptionPane.showMessageDialog(null, "Please enter Phone Number");*/
 	   	}
 	   	
-	   	email   = jtfEmail.getText();
+	   	pincode   = jtfpincode.getText();
 	
 	   	if(name.equals("")){
 	   		JOptionPane.showMessageDialog(null, "Please enter person name.");
 	   	}else{
 		   	  //create a PersonInfo object and pass it to PersonDAO to save it
-		   	  PersonInfo person = new PersonInfo(name, address, phone, email);
+		   	  PersonInfo person = new PersonInfo(name, address, phone, pincode);
 		   	  pDAO.savePerson(person);
 		   	  JOptionPane.showMessageDialog(null, "Person Saved");
 	      }
@@ -292,10 +292,10 @@ public class addressbook implements ActionListener
    	   name    = jtfName.getText();
    	   address = jtfAddress.getText();
    	   phone   = Integer.parseInt(jtfPhone.getText());
-       email   = jtfEmail.getText();
+       pincode   = jtfpincode.getText();
 
    	   /*update data of the given person name*/
-   	   person = new PersonInfo(id, name, address, phone, email);
+   	   person = new PersonInfo(id, name, address, phone, pincode);
             pDAO.updatePerson(person);
 
    	   JOptionPane.showMessageDialog(null, "Person info record updated successfully.");         
@@ -338,7 +338,7 @@ public class addressbook implements ActionListener
 	   			jtfName.setText(person.getName());
 	   			jtfAddress.setText(person.getAddress());
 	   			jtfPhone.setText(""+person.getPhone());
-	   			jtfEmail.setText(person.getEmail());
+	   			jtfpincode.setText(person.getpincode());
 	   		}
 	   	}
 
@@ -369,7 +369,7 @@ public class addressbook implements ActionListener
    		jtfName.setText(person.getName());
    		jtfAddress.setText(person.getAddress());
    		jtfPhone.setText(""+person.getPhone());
-   		jtfEmail.setText(person.getEmail());
+   		jtfpincode.setText(person.getpincode());
    	}
    }
 
@@ -398,7 +398,7 @@ public class addressbook implements ActionListener
 	   		jtfName.setText(person.getName());
 	   		jtfAddress.setText(person.getAddress());
 	   		jtfPhone.setText(""+person.getPhone());
-	   		jtfEmail.setText(person.getEmail());
+	   		jtfpincode.setText(person.getpincode());
 	   	}
 
      }
@@ -408,7 +408,7 @@ public class addressbook implements ActionListener
 	   	jtfName.setText("");
 	   	jtfAddress.setText("");
 	   	jtfPhone.setText("");
-	   	jtfEmail.setText("");
+	   	jtfpincode.setText("");
 	   	
 	   	/*clear contents of arraylist*/
 	    recordNumber = -1;
@@ -430,7 +430,7 @@ public class addressbook implements ActionListener
 	name Varchar(30),
 	address Varchar(30),
 	phone Integer,
-	email Varchar(50)
+	pincode Varchar(50)
 import java.util.*;
 import java.sql.*;
 );*/
@@ -480,7 +480,7 @@ import java.sql.*;
 
             String pname = "";
             String address = "";
-            String email = "";
+            String pincode = "";
             int id, phone;
 
 			while(rs.next())
@@ -489,10 +489,10 @@ import java.sql.*;
 				pname = rs.getString("name");
 				address = rs.getString("address");
 				phone = rs.getInt("phone");
-				email = rs.getString("email");
+				pincode = rs.getString("pincode");
 
 				//Create a PersonInfo object
-				PersonInfo person = new PersonInfo(id, pname, address, phone, email);
+				PersonInfo person = new PersonInfo(id, pname, address, phone, pincode);
 
 				//Add the person object to array list
 				personsList.add(person);
@@ -510,7 +510,7 @@ import java.sql.*;
 		try
 		{
 			String sql = "INSERT INTO Person(name, address, " +
-							"phone, email) VALUES (?,?,?,?) ";
+							"phone, pincode) VALUES (?,?,?,?) ";
 
 			// Create a Preparedstatement
  			PreparedStatement ps = con.prepareStatement(sql);
@@ -518,7 +518,7 @@ import java.sql.*;
 			ps.setString(1, person.getName());
 			ps.setString(2, person.getAddress());
 			ps.setInt(3, person.getPhone());
-			ps.setString(4, person.getEmail());
+			ps.setString(4, person.getpincode());
 
 			ps.executeUpdate();
 		}
@@ -532,7 +532,7 @@ import java.sql.*;
 		try
 		{
 			String sql = "UPDATE Person SET name = ?, address=? , " +
-					"phone=? , email=? where id=?";
+					"phone=? , pincode=? where id=?";
 
 			// Create a Prepared statement
  			PreparedStatement ps = con.prepareStatement(sql);
@@ -540,7 +540,7 @@ import java.sql.*;
 			ps.setString(1 , person.getName());		
 			ps.setString(2 , person.getAddress());
 			ps.setInt(3 , person.getPhone());
-			ps.setString(4 , person.getEmail());
+			ps.setString(4 , person.getpincode());
 			ps.setInt(5 , person.getId());
 
 			ps.executeUpdate();
@@ -571,7 +571,7 @@ import java.sql.*;
 
  class PersonInfo
 {
-	private String name,address,email;
+	private String name,address,pincode;
 	private int id, phone;
 
       // default constructor
@@ -579,28 +579,28 @@ import java.sql.*;
       {       
          name = "";
          address = "";
-         email = "";
+         pincode = "";
 
          id = 0;  
          phone = 0;
       }
 
-	public PersonInfo(int id, String name, String address, int phone, String email)
+	public PersonInfo(int id, String name, String address, int phone, String pincode)
 	{
         this.id = id;
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
-		this.email = email;
+		this.pincode = pincode;
 	}
  
       // param construcrtor with 4 values 
-	public PersonInfo(String name, String address, int phone, String email)
+	public PersonInfo(String name, String address, int phone, String pincode)
 	{
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
-		this.email = email;
+		this.pincode = pincode;
 	}
 
       // setters
@@ -621,9 +621,9 @@ import java.sql.*;
 	{
 		phone=ph;
 	}
-	public void setEmail(String e)
+	public void setpincode(String e)
 	{
-		email=e;
+		pincode=e;
 	}
 
       // getters
@@ -647,9 +647,9 @@ import java.sql.*;
 		return phone;
 	}
 
-	public String getEmail()
+	public String getpincode()
 	{
-		return email;
+		return pincode;
 	}
 
 }
